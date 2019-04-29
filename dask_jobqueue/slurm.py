@@ -23,7 +23,7 @@ class SLURMCluster(JobQueueCluster):
     walltime : str
         Walltime for each worker job.
     job_cpu : int
-        Number of cpu to book in SLURM, if None, defaults to worker `threads * processes`
+        Number of cpu to book in SLURM, if None, defaults to worker `cores * processes`
     job_mem : str
         Amount of memory to request in SLURM. If None, defaults to worker
         processes * memory
@@ -98,7 +98,7 @@ class SLURMCluster(JobQueueCluster):
             header_lines.append("#SBATCH -A %s" % project)
 
         # Init resources, always 1 task,
-        # and then number of cpu is processes * threads if not set
+        # and then number of cpu is processes * cores if not set
         header_lines.append("#SBATCH -n 1")
         header_lines.append(
             "#SBATCH --cpus-per-task=%d" % (job_cpu or self.worker_cores)
